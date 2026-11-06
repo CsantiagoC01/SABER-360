@@ -1,22 +1,35 @@
 # SABER-360
 
-Sistema integral de gestión y control educativo para centralizar los procesos académicos y administrativos de una institución escolar.
+Sistema integral de gestión y control educativo para centralizar procesos académicos y administrativos de una institución escolar.
 
-## Alcance inicial
+## Estado del proyecto
 
-La plataforma se organizará por módulos y permisos según el tipo de usuario:
+El repositorio contiene el alcance inicial, la propuesta de producto y el primer prototipo ejecutable del panel web. El panel usa información de demostración local; todavía no hay API, base de datos ni autenticación real.
 
-- **Usuarios y acceso:** inicio de sesión, perfiles, roles y permisos (administración, docentes, estudiantes, familias y personal no docente).
-- **Estudiantes y familias:** expedientes, contactos, matrículas y seguimiento.
-- **Personal docente:** perfiles, asignaturas, cursos y carga académica.
-- **Gestión de empleados no docentes:** administración del personal administrativo y de apoyo, como dirección, secretaría, orientación, biblioteca, mantenimiento, limpieza, seguridad y servicios escolares. Permitirá gestionar expedientes laborales, datos de contacto, departamento y puesto, estado laboral, fechas de ingreso y salida, horarios, asistencia, permisos y documentos asociados, con acceso restringido por rol.
-- **Estructura académica:** ciclos, grados, grupos, materias, cursos y horarios.
-- **Vida académica:** calificaciones, asistencia, tareas y reportes de progreso.
-- **Administración escolar:** anuncios, comunicaciones, pagos y reportes institucionales.
-- **Configuración:** datos de la institución, periodos y parámetros del sistema.
+## Aplicación web
 
-La gestión de empleados no docentes será independiente de la gestión de docentes, aunque ambas podrán compartir datos de usuario y controles de acceso comunes. La información laboral y los documentos personales deberán estar disponibles únicamente para usuarios autorizados.
+Requisitos: Node.js 20 o superior y npm.
 
-## Inicio del proyecto
+```bash
+npm install
+npm run dev
+```
 
-El repositorio está en etapa inicial. La arquitectura, el stack tecnológico y los módulos se definirán antes de comenzar la implementación para que puedan ajustarse a las necesidades de la institución.
+Vite mostrará la dirección local en la terminal. Para validar una compilación de producción:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Estructura
+
+- `apps/web`: interfaz React + TypeScript + Vite, organizada para crecer por módulos.
+- `apps/api`: espacio para la API; su tecnología y persistencia se definirán antes de implementarlas.
+- `packages`: contratos y configuración compartidos cuando sean necesarios.
+- `docs/plan-proyecto-v1.md`: propuesta de negocio y producto.
+- `docs/arquitectura-estructura.md`: límites y reglas de modularidad.
+
+## Alcance del prototipo
+
+El panel inicial incluye navegación por módulos, métricas escolares de muestra, resumen semanal de asistencia, próximos eventos, búsqueda de estudiantes y un formulario que agrega estudiantes solo al estado local de la página. Los datos se reinician al recargar; no representan registros reales.
