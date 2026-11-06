@@ -4,11 +4,14 @@ API inicial basada en Express, TypeScript, Prisma y PostgreSQL. Está organizada
 
 ## Inicio local
 
-Desde la raíz del repositorio:
+Requisitos: Node.js 20 o superior, npm y Docker Compose.
+
+1. Copia `apps/api/.env.example` a `apps/api/.env`.
+2. Define en ese archivo seis contraseñas distintas, de al menos 12 caracteres, para las variables `SEED_*_PASSWORD`. Son credenciales exclusivamente locales; no las uses en producción.
+3. Inicia PostgreSQL desde la raíz:
 
 ```bash
-cp apps/api/.env.example apps/api/.env
- docker compose -f infra/docker-compose.yml up -d
+docker compose -f infra/docker-compose.yml up -d
 npm install
 npm run db:generate
 npm run db:migrate
@@ -18,23 +21,23 @@ npm run dev:api
 
 La API queda en `http://localhost:4000`. Endpoints iniciales: `GET /health`, `GET /ready`, `GET|POST /api/students` y `GET|POST /api/staff`.
 
-Ejemplo de creación de empleado no docente:
+## Seed de desarrollo
 
-```json
-{
-  "employeeCode": "EMP-001",
-  "firstName": "María",
-  "lastName": "Pérez",
-  "department": "Secretaría",
-  "position": "Asistente administrativa",
-  "staffType": "NON_TEACHING"
-}
-```
+El seed es idempotente: prepara la institución `Instituto Horizonte`, permisos, roles, seis cuentas de prueba y sus membresías. No sobrescribe las contraseñas de cuentas que ya existan. Al modificar la lista de roles/permisos, el seed agrega las asignaciones nuevas; no elimina asignaciones antiguas automáticamente.
 
-## Base de datos
+Cuentas creadas:
 
-El esquema Prisma está en `prisma/schema.prisma`. La migración inicial se crea localmente con `npm run db:migrate`; después de revisar y versionar ese SQL, los despliegues deben usar migraciones versionadas, no `migrate dev`.
+| Rol | Correo |
+|---|---|
+| Administrador | `admin@saber360.local` |
+| Coordinación académica | `coordinacion@saber360.local` |
+| Docente | `docente@saber360.local` |
+| Personal no docente | `personal@saber360.local` |
+| Estudiante | `estudiante@saber360.local` |
+| Acudiente | `acudiente@saber360.local` |
+
+Las contraseñas se definen localmente mediante las variables de entorno indicadas arriba. El hash se genera con bcrypt. El seed no imprime contraseñas.
 
 ## Importante antes de desplegar
 
-Este es un backend de desarrollo: las rutas de escritura aún no tienen autenticación ni autorización. No exponerlo a Internet ni conectarlo a datos personales reales hasta incorporar autenticación, permisos por institución, auditoría, gestión segura de secretos, copias de seguridad y revisión de privacidad. Cambiar la contraseña de ejemplo y configurar HTTPS/secretos es obligatorio fuera del entorno local.
+Este es un backend de desarrollo: las rutas de escritura aún no tienen autenticación ni autorización. Los roles y permisos que crea el seed son datos de configuración, pero todavía no están aplicados como controles en los endpoints. No exponer la API a Internet ni conectarla a datos personales reales hasta incorporar autenticación, autorización, aislamiento por institución, auditoría, gestión segura de secretos, copias de seguridad y revisión de privacidad.
